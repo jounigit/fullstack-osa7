@@ -1,7 +1,8 @@
 import React from 'react'
+import { connect } from 'react-redux'
+import { notify } from './reducers/notificationReducer'
 import Blog from './components/Blog'
-import MessageNotification from './components/MessageNotification'
-import ErrorNotification from './components/ErrorNotification'
+import Notification from './components/Notification'
 import Togglable from './components/Togglable'
 import LoginForm from './components/LoginForm'
 import BlogForm from './components/BlogForm'
@@ -18,8 +19,6 @@ class App extends React.Component {
       blogUrl: '',
       username: '',
       password: '',
-      message: null,
-      error: null,
       user: null
     }
   }
@@ -49,19 +48,17 @@ class App extends React.Component {
       blogService.setToken(user.token)
 
         this.setState({ username: '', password: '', user })
+        this.props.notify(`'${this.state.user.name}' logged in`, 10, 'success')
     } catch(exception) {
-        this.setState({
-          error: 'wrong username or password',
-        })
-        setTimeout(() => {
-          this.setState({ error: null })
-        }, 5000)
+        this.props.notify('wrong username or password', 10, 'error')
+        this.setState({ username: '', password: '' })
       }
   }
 
   logout = async (event) => {
     event.preventDefault()
     window.localStorage.removeItem('loggedBlogAppUser')
+    this.props.notify(`'${this.state.user.name}' logged out`, 10, 'success')
     this.setState({ user: null})
   }
 
@@ -80,24 +77,18 @@ class App extends React.Component {
 
           this.setState({
               blogs: this.state.blogs.concat(newBlog),
-              message: `a new blog '${newBlog.title}' by ${newBlog.author} added`,
               blogTitle: '',
               blogAuthor: '',
               blogUrl: ''
             })
-            setTimeout(() => {
-              this.setState({ message: null })
-            }, 5000)
+          this.props.notify(`a new blog '${newBlog.title}' by ${newBlog.author} added`, 10, 'success')
         } catch(exception) {
             this.setState({
-              error: 'something went wrong',
               blogTitle: '',
               blogAuthor: '',
               blogUrl: ''
             })
-            setTimeout(() => {
-              this.setState({ error: null })
-            }, 5000)
+            this.props.notify('something went wrong', 10, 'error')
           }
   }
 
@@ -113,13 +104,9 @@ class App extends React.Component {
         this.setState({
           blogs: this.state.blogs.map(blog => blog.id !== id ? blog : blogToState)
         })
+        this.props.notify(`you liked '${blog.title}'`, 10, 'success')
       } catch (exception) {
-        this.setState({
-        error: 'updating error',
-        })
-        setTimeout(() => {
-          this.setState({ error: null })
-        }, 5000)
+        this.props.notify('updating error', 10, 'error')
       }
     }
   }
@@ -173,9 +160,7 @@ class App extends React.Component {
 
     return (
       <div>
-
-      <MessageNotification message={this.state.message} />
-      <ErrorNotification error={this.state.error} />
+      <Notification />
 
         <h2>blogs</h2>
 
@@ -195,4 +180,12 @@ class App extends React.Component {
   }
 }
 
-export default App;
+const mapDispatchToProps = {
+  //vote,
+  notify
+}
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(App)
