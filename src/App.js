@@ -6,6 +6,7 @@ import Notification from './components/Notification'
 import Togglable from './components/Togglable'
 import LoginForm from './components/LoginForm'
 import BlogForm from './components/BlogForm'
+import Users from './components/Users'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
@@ -22,11 +23,7 @@ const Menu = ({ user, logout }) => (
   </div>
 )
 
-const Users = () => (
-  <div> <h2>Users</h2> </div>
-)
-
-const BlogList = ({ blogs }) => (
+const BlogList = ({ blogs, toggleLike }) => (
   <div>
     {blogs.sort( (a,b) => b.likes - a.likes ).map(blog =>
       <Blog key={blog.id}
@@ -35,9 +32,8 @@ const BlogList = ({ blogs }) => (
         url={blog.url}
         likes={blog.likes}
         name={blog.user === undefined ? 'anonymous' : blog.user['name']}
-        //toggleLike={this.toggleLikeOf(blog.id)}
+        toggleLike={toggleLike(blog.id)}
       /> ) }
-  )
   </div>
 )
 
@@ -204,7 +200,7 @@ class App extends React.Component {
                 <Menu user={this.state.user} logout={this.logout} />
                 {blogForm()}
                 <Route exact path="/" render={() =>
-                  <BlogList blogs={this.state.blogs} />} />
+                  <BlogList blogs={this.state.blogs} toggleLike={this.toggleLikeOf} />} />
                 <Route path="/users" render={() => <Users />} />
 
               </div>
