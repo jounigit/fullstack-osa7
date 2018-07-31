@@ -8,6 +8,38 @@ import LoginForm from './components/LoginForm'
 import BlogForm from './components/BlogForm'
 import blogService from './services/blogs'
 import loginService from './services/login'
+import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
+
+const Menu = ({ user, logout }) => (
+  <div className="success">
+    <Link to="/">blogs</Link> &nbsp;
+    <Link to="/users">users</Link> &nbsp;
+    {user
+      ? <em>{user.name} logged in</em>
+      : <Link to="/login">login</Link>
+    }
+    {user && <button onClick={logout}>logout</button>}
+  </div>
+)
+
+const Users = () => (
+  <div> <h2>Users</h2> </div>
+)
+
+const BlogList = ({ blogs }) => (
+  <div>
+    {blogs.sort( (a,b) => b.likes - a.likes ).map(blog =>
+      <Blog key={blog.id}
+        title={blog.title}
+        author={blog.author}
+        url={blog.url}
+        likes={blog.likes}
+        name={blog.user === undefined ? 'anonymous' : blog.user['name']}
+        //toggleLike={this.toggleLikeOf(blog.id)}
+      /> ) }
+  )
+  </div>
+)
 
 class App extends React.Component {
   constructor(props) {
@@ -144,7 +176,7 @@ class App extends React.Component {
         />
       </Togglable>
     )
-
+    /*
     const sortedBlogs = () => (
       this.state.blogs.sort( (a,b) => b.likes - a.likes ).map(blog =>
         <Blog key={blog.id}
@@ -156,23 +188,27 @@ class App extends React.Component {
           toggleLike={this.toggleLikeOf(blog.id)}
         />
       )
-    )
+    ) */
 
     return (
       <div>
         <Notification />
 
-        <h2>blogs</h2>
+        <h2>Blog app</h2>
 
         {this.state.user === null ?
           loginForm() :
           <div>
-            <p>
-              {this.state.user.name} logged in
-              <button onClick={this.logout}>logout</button>
-            </p>
-            {blogForm()}
-            {sortedBlogs()}
+            <Router>
+              <div>
+                <Menu user={this.state.user} logout={this.logout} />
+                {blogForm()}
+                <Route exact path="/" render={() =>
+                  <BlogList blogs={this.state.blogs} />} />
+                <Route path="/users" render={() => <Users />} />
+
+              </div>
+            </Router>
           </div>
         }
       </div>
