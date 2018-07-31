@@ -35,4 +35,4 @@ const move = async (id) => {
   return response.data
 }
 
-export default { getAll, create, update, move, setToken}
+export default { getAll, create, update, move, setToken }

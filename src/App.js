@@ -31,7 +31,7 @@ class App extends React.Component {
     const loggedUserJSON = window.localStorage.getItem('loggedBlogAppUser')
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON)
-      this.setState({user})
+      this.setState({ user })
     }
   }
 
@@ -39,7 +39,7 @@ class App extends React.Component {
     event.preventDefault()
     console.log('login in with', this.state.username, this.state.password)
     try {
-        const user = await loginService.login({
+      const user = await loginService.login({
         username: this.state.username,
         password: this.state.password
       })
@@ -47,19 +47,19 @@ class App extends React.Component {
       window.localStorage.setItem('loggedBlogAppUser', JSON.stringify(user))
       blogService.setToken(user.token)
 
-        this.setState({ username: '', password: '', user })
-        this.props.notify(`'${this.state.user.name}' logged in`, 10, 'success')
+      this.setState({ username: '', password: '', user })
+      this.props.notify(`'${this.state.user.name}' logged in`, 10, 'success')
     } catch(exception) {
-        this.props.notify('wrong username or password', 10, 'error')
-        this.setState({ username: '', password: '' })
-      }
+      this.props.notify('wrong username or password', 10, 'error')
+      this.setState({ username: '', password: '' })
+    }
   }
 
   logout = async (event) => {
     event.preventDefault()
     window.localStorage.removeItem('loggedBlogAppUser')
     this.props.notify(`'${this.state.user.name}' logged out`, 10, 'success')
-    this.setState({ user: null})
+    this.setState({ user: null })
   }
 
   addBlog = async (event) => {
@@ -75,29 +75,29 @@ class App extends React.Component {
 
       const newBlog = await blogService.create(blogObj)
 
-          this.setState({
-              blogs: this.state.blogs.concat(newBlog),
-              blogTitle: '',
-              blogAuthor: '',
-              blogUrl: ''
-            })
-          this.props.notify(`a new blog '${newBlog.title}' by ${newBlog.author} added`, 10, 'success')
-        } catch(exception) {
-            this.setState({
-              blogTitle: '',
-              blogAuthor: '',
-              blogUrl: ''
-            })
-            this.props.notify('something went wrong', 10, 'error')
-          }
+      this.setState({
+        blogs: this.state.blogs.concat(newBlog),
+        blogTitle: '',
+        blogAuthor: '',
+        blogUrl: ''
+      })
+      this.props.notify(`a new blog '${newBlog.title}' by ${newBlog.author} added`, 10, 'success')
+    } catch(exception) {
+      this.setState({
+        blogTitle: '',
+        blogAuthor: '',
+        blogUrl: ''
+      })
+      this.props.notify('something went wrong', 10, 'error')
+    }
   }
 
   toggleLikeOf = (id) => {
     return async () => {
       try {
         const blog = this.state.blogs.find(b => b.id === id)
-        const blogToServer = {...blog, likes: blog.likes+1, user: blog.user._id}
-        const blogToState = {...blog, likes: blog.likes+1}
+        const blogToServer = { ...blog, likes: blog.likes+1, user: blog.user._id }
+        const blogToState = { ...blog, likes: blog.likes+1 }
 
         await blogService.update(id, blogToServer)
 
@@ -160,7 +160,7 @@ class App extends React.Component {
 
     return (
       <div>
-      <Notification />
+        <Notification />
 
         <h2>blogs</h2>
 
@@ -176,7 +176,7 @@ class App extends React.Component {
           </div>
         }
       </div>
-    );
+    )
   }
 }
 
