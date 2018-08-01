@@ -7,7 +7,7 @@ import Togglable from './components/Togglable'
 import LoginForm from './components/LoginForm'
 import BlogForm from './components/BlogForm'
 //import UserList from './components/UserList'
-import User from './components/User'
+//import User from './components/User'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import usersService from './services/users'
@@ -51,6 +51,24 @@ const UserList = ({ users }) => (
     </table>
   </div>
 )
+
+const User = ({ match, users }) => {
+  const user = users.find(user => user.id === match.params.id)
+  return user === undefined ? '' :
+    (
+      <div>
+        <h2>{user.name}</h2>
+        <ul>
+          {user.blogs.map(b =>
+            <li key={b._id}>
+              {b.title}
+            </li>
+          )}
+        </ul>
+      </div>
+    )
+}
+
 
 class App extends React.Component {
   constructor(props) {
@@ -209,6 +227,8 @@ class App extends React.Component {
       )
     )
 
+
+
     return (
       <div>
         <Notification />
@@ -224,9 +244,9 @@ class App extends React.Component {
                 {blogForm()}
                 <Route exact path="/" render={() => sortedBlogs() } />
                 <Route exact path="/users" render={() => <UserList users={this.state.users} />} />
+
                 <Route exact path="/users/:id" render={({ match }) =>
-                  <User user={userById(match.params.id)} />}
-                />
+                  <User match={match} users={this.state.users} />} />
               </div>
             </Router>
           </div>
@@ -245,3 +265,10 @@ export default connect(
   null,
   mapDispatchToProps
 )(App)
+/*
+<Route exact path="/users/:id" component={User} />
+
+<Route exact path="/users/:id" render={({ match }) =>
+  <User user={userById(match.params.id)} />}
+/>
+*/
