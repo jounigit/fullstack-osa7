@@ -6,9 +6,11 @@ import Notification from './components/Notification'
 import Togglable from './components/Togglable'
 import LoginForm from './components/LoginForm'
 import BlogForm from './components/BlogForm'
-import Users from './components/Users'
+//import UserList from './components/UserList'
+import User from './components/User'
 import blogService from './services/blogs'
 import loginService from './services/login'
+import usersService from './services/users'
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
 
 const Menu = ({ user, logout }) => (
@@ -23,17 +25,30 @@ const Menu = ({ user, logout }) => (
   </div>
 )
 
-const BlogList = ({ blogs, toggleLike }) => (
+const UserList = ({ users }) => (
   <div>
-    {blogs.sort( (a,b) => b.likes - a.likes ).map(blog =>
-      <Blog key={blog.id}
-        title={blog.title}
-        author={blog.author}
-        url={blog.url}
-        likes={blog.likes}
-        name={blog.user === undefined ? 'anonymous' : blog.user['name']}
-        toggleLike={toggleLike(blog.id)}
-      /> ) }
+    <h2>users</h2>
+    <table>
+      <tbody>
+        <tr>
+          <td>
+          </td>
+          <td>
+            <strong>blogs added</strong>
+          </td>
+        </tr>
+        {users.map(user =>
+          <tr key={user.id}>
+            <td>
+              <Link to={`/users/${user.id}`}>{user.name}</Link>
+            </td>
+            <td>
+              {user.blogs.length}
+            </td>
+          </tr>
+        )}
+      </tbody>
+    </table>
   </div>
 )
 
@@ -47,6 +62,7 @@ class App extends React.Component {
       blogUrl: '',
       username: '',
       password: '',
+      users: [],
       user: null
     }
   }
@@ -54,6 +70,10 @@ class App extends React.Component {
   componentDidMount() {
     blogService.getAll().then(blogs =>
       this.setState({ blogs })
+    )
+
+    usersService.getAll().then(users =>
+      this.setState({ users })
     )
 
     const loggedUserJSON = window.localStorage.getItem('loggedBlogAppUser')
@@ -172,7 +192,10 @@ class App extends React.Component {
         />
       </Togglable>
     )
-    /*
+
+    const userById = (id) => this.state.users.find(user => user.id === id)
+
+    /**/
     const sortedBlogs = () => (
       this.state.blogs.sort( (a,b) => b.likes - a.likes ).map(blog =>
         <Blog key={blog.id}
@@ -184,7 +207,7 @@ class App extends React.Component {
           toggleLike={this.toggleLikeOf(blog.id)}
         />
       )
-    ) */
+    )
 
     return (
       <div>
@@ -199,10 +222,11 @@ class App extends React.Component {
               <div>
                 <Menu user={this.state.user} logout={this.logout} />
                 {blogForm()}
-                <Route exact path="/" render={() =>
-                  <BlogList blogs={this.state.blogs} toggleLike={this.toggleLikeOf} />} />
-                <Route path="/users" render={() => <Users />} />
-
+                <Route exact path="/" render={() => sortedBlogs() } />
+                <Route exact path="/users" render={() => <UserList users={this.state.users} />} />
+                <Route exact path="/users/:id" render={({ match }) =>
+                  <User user={userById(match.params.id)} />}
+                />
               </div>
             </Router>
           </div>
