@@ -1,16 +1,17 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import { userInit } from './reducers/userReducer'
 import { notify } from './reducers/notificationReducer'
 import Blog from './components/Blog'
 import Notification from './components/Notification'
 import Togglable from './components/Togglable'
 import LoginForm from './components/LoginForm'
 import BlogForm from './components/BlogForm'
-//import UserList from './components/UserList'
-//import User from './components/User'
+import UserList from './components/UserList'
+import User from './components/User'
 import blogService from './services/blogs'
 import loginService from './services/login'
-import usersService from './services/users'
+//import usersService from './services/users'
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
 
 const Menu = ({ user, logout }) => (
@@ -25,51 +26,6 @@ const Menu = ({ user, logout }) => (
   </div>
 )
 
-const UserList = ({ users }) => (
-  <div>
-    <h2>users</h2>
-    <table>
-      <tbody>
-        <tr>
-          <td>
-          </td>
-          <td>
-            <strong>blogs added</strong>
-          </td>
-        </tr>
-        {users.map(user =>
-          <tr key={user.id}>
-            <td>
-              <Link to={`/users/${user.id}`}>{user.name}</Link>
-            </td>
-            <td>
-              {user.blogs.length}
-            </td>
-          </tr>
-        )}
-      </tbody>
-    </table>
-  </div>
-)
-
-const User = ({ match, users }) => {
-  const user = users.find(user => user.id === match.params.id)
-  return user === undefined ? '' :
-    (
-      <div>
-        <h2>{user.name}</h2>
-        <ul>
-          {user.blogs.map(b =>
-            <li key={b._id}>
-              {b.title}
-            </li>
-          )}
-        </ul>
-      </div>
-    )
-}
-
-
 class App extends React.Component {
   constructor(props) {
     super(props)
@@ -80,19 +36,15 @@ class App extends React.Component {
       blogUrl: '',
       username: '',
       password: '',
-      users: [],
       user: null
     }
   }
 
-  componentDidMount() {
-    blogService.getAll().then(blogs =>
-      this.setState({ blogs })
-    )
+  componentDidMount = async () => {
+    const blogs = await blogService.getAll()
+    this.setState({ blogs })
 
-    usersService.getAll().then(users =>
-      this.setState({ users })
-    )
+    this.props.userInit()
 
     const loggedUserJSON = window.localStorage.getItem('loggedBlogAppUser')
     if (loggedUserJSON) {
@@ -241,10 +193,10 @@ class App extends React.Component {
                 <Menu user={this.state.user} logout={this.logout} />
                 {blogForm()}
                 <Route exact path="/" render={() => sortedBlogs() } />
-                <Route exact path="/users" render={() => <UserList users={this.state.users} />} />
+                <Route exact path="/users" render={() => <UserList />} />
 
                 <Route exact path="/users/:id" render={({ match }) =>
-                  <User match={match} users={this.state.users} />} />
+                  <User match={match} />} />
               </div>
             </Router>
           </div>
@@ -255,7 +207,7 @@ class App extends React.Component {
 }
 
 const mapDispatchToProps = {
-  //vote,
+  userInit,
   notify
 }
 
@@ -267,6 +219,5 @@ export default connect(
 <Route exact path="/users/:id" component={User} />
 
 <Route exact path="/users/:id" render={({ match }) =>
-  <User user={userById(match.params.id)} />}
-/>
+  <User match={match} />} />
 */
