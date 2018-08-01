@@ -211,8 +211,6 @@ class App extends React.Component {
       </Togglable>
     )
 
-    const userById = (id) => this.state.users.find(user => user.id === id)
-
     /**/
     const sortedBlogs = () => (
       this.state.blogs.sort( (a,b) => b.likes - a.likes ).map(blog =>
