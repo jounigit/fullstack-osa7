@@ -1,18 +1,33 @@
 import React from 'react'
-import Blog from './components/Blog'
 
-const BlogList = ({ blogs, toggleLike }) => (
-  <div>
-    {blogs.sort( (a,b) => b.likes - a.likes ).map(blog =>
-      <Blog key={blog.id}
-        title={blog.title}
-        author={blog.author}
-        url={blog.url}
-        likes={blog.likes}
-        name={blog.user === undefined ? 'anonymous' : blog.user['name']}
-        toggleLike={toggleLike(blog.id)}
-      /> ) }
-  </div>
-)
+import {  Link } from 'react-router-dom'
+
+class BlogList extends React.Component {
+  render() {
+    const blogStyle = {
+      paddingTop: 10,
+      paddingLeft: 2,
+      border: 'solid',
+      borderWidth: 1,
+      marginBottom: 5
+    }
+    return (
+      <div>
+        <h2>blogs</h2>
+        {this.props.blogs.map(blog =>
+          <div key={blog.id}  style={blogStyle}>
+
+            <Link to={`/blogs/${blog.id}`}>
+              <div className="titleAndAuthor">
+                {blog.title} {blog.author}
+              </div>
+            </Link>
+
+          </div>
+        )}
+      </div>
+    )
+  }
+}
 
 export default BlogList

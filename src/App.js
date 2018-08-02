@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { userInit } from './reducers/userReducer'
 import { notify } from './reducers/notificationReducer'
 import Blog from './components/Blog'
+import BlogList from './components/BlogList'
 import Notification from './components/Notification'
 import Togglable from './components/Togglable'
 import LoginForm from './components/LoginForm'
@@ -13,6 +14,7 @@ import blogService from './services/blogs'
 import loginService from './services/login'
 //import usersService from './services/users'
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
+
 
 const Menu = ({ user, logout }) => (
   <div className="success">
@@ -36,6 +38,7 @@ class App extends React.Component {
       blogUrl: '',
       username: '',
       password: '',
+      removed: false,
       user: null
     }
   }
@@ -111,7 +114,8 @@ class App extends React.Component {
   }
 
   remove = (id) => async () => {
-    const deleted = this.state.blogs.find(b => b._id === id)
+    console.log('Remove ID:: ', id)
+    const deleted = this.state.blogs.find(b => b.id === id)
     const ok = window.confirm(`remove blog '${deleted.title}' by ${deleted.author}?`)
     if ( ok===false) {
       return
@@ -120,8 +124,9 @@ class App extends React.Component {
     await blogService.remove(id)
     this.props.notify(`blog '${deleted.title}' by ${deleted.author} removed`)
     this.setState({
-      blogs: this.state.blogs.filter(b => b._id!==id)
+      blogs: this.state.blogs.filter(b => b.id!==id)
     })
+
   }
 
   toggleLikeOf = (id) => {
@@ -154,15 +159,13 @@ class App extends React.Component {
   render() {
     if (this.state.user === null) {
       return (
-        <Togglable buttonLabel="login">
-          <LoginForm
-            visible={this.state.visible}
-            username={this.state.username}
-            password={this.state.password}
-            handleChange={this.handleLoginFieldChange}
-            handleSubmit={this.login}
-          />
-        </Togglable>
+        <LoginForm
+          visible={this.state.visible}
+          username={this.state.username}
+          password={this.state.password}
+          handleChange={this.handleLoginFieldChange}
+          handleSubmit={this.login}
+        />
       )
     }
 
@@ -179,18 +182,6 @@ class App extends React.Component {
       </Togglable>
     )
 
-    /**/
-    const sortedBlogs = () => (
-      this.state.blogs.sort( (a,b) => b.likes - a.likes ).map(blog =>
-        <Blog key={blog.id}
-          blog={blog}
-          like={this.toggleLikeOf(blog.id)}
-          remove={this.remove(blog._id)}
-          deletable={blog.user === undefined || blog.user.username === this.state.user.username}
-        />
-      )
-    )
-
     return (
       <div>
         <Notification />
@@ -201,7 +192,15 @@ class App extends React.Component {
           <div>
             <Menu user={this.state.user} logout={this.logout} />
             {blogForm()}
-            <Route exact path="/" render={() => sortedBlogs() } />
+            <Route exact path="/" render={() => <BlogList blogs={this.state.blogs} /> } />
+            <Route exact path="/blogs/:id" render={({ match, history }) =>
+              <Blog
+                match={match}
+                blogs={this.state.blogs}
+                like={this.toggleLikeOf(match.params.id)}
+                remove={this.remove(match.params.id)}
+                username={this.state.user.username}
+              />} />
             <Route exact path="/users" render={() => <UserList />} />
 
             <Route exact path="/users/:id" render={({ match }) =>

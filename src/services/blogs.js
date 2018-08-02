@@ -26,7 +26,7 @@ const update = async (id, newObject) => {
   return response.data
 }
 
-const move = async (id) => {
+const remove = async (id) => {
   const config = {
     headers: { 'Authorization': token }
   }
@@ -35,4 +35,4 @@ const move = async (id) => {
   return response.data
 }
 
-export default { getAll, create, update, move, setToken }
+export default { getAll, create, update, remove, setToken }
