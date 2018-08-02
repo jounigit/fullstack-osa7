@@ -110,6 +110,20 @@ class App extends React.Component {
     }
   }
 
+  remove = (id) => async () => {
+    const deleted = this.state.blogs.find(b => b._id === id)
+    const ok = window.confirm(`remove blog '${deleted.title}' by ${deleted.author}?`)
+    if ( ok===false) {
+      return
+    }
+
+    await blogService.remove(id)
+    this.props.notify(`blog '${deleted.title}' by ${deleted.author} removed`)
+    this.setState({
+      blogs: this.state.blogs.filter(b => b._id!==id)
+    })
+  }
+
   toggleLikeOf = (id) => {
     return async () => {
       try {
@@ -138,6 +152,20 @@ class App extends React.Component {
   }
 
   render() {
+    if (this.state.user === null) {
+      return (
+        <Togglable buttonLabel="login">
+          <LoginForm
+            visible={this.state.visible}
+            username={this.state.username}
+            password={this.state.password}
+            handleChange={this.handleLoginFieldChange}
+            handleSubmit={this.login}
+          />
+        </Togglable>
+      )
+    }
+
     const blogForm = () => (
       <Togglable buttonLabel="new blog" ref={component => this.blogForm = component}>
         <BlogForm
@@ -151,33 +179,17 @@ class App extends React.Component {
       </Togglable>
     )
 
-    const loginForm = () => (
-      <Togglable buttonLabel="login">
-        <LoginForm
-          visible={this.state.visible}
-          username={this.state.username}
-          password={this.state.password}
-          handleChange={this.handleLoginFieldChange}
-          handleSubmit={this.login}
-        />
-      </Togglable>
-    )
-
     /**/
     const sortedBlogs = () => (
       this.state.blogs.sort( (a,b) => b.likes - a.likes ).map(blog =>
         <Blog key={blog.id}
-          title={blog.title}
-          author={blog.author}
-          url={blog.url}
-          likes={blog.likes}
-          name={blog.user === undefined ? 'anonymous' : blog.user['name']}
-          toggleLike={this.toggleLikeOf(blog.id)}
+          blog={blog}
+          like={this.toggleLikeOf(blog.id)}
+          remove={this.remove(blog._id)}
+          deletable={blog.user === undefined || blog.user.username === this.state.user.username}
         />
       )
     )
-
-
 
     return (
       <div>
@@ -185,22 +197,17 @@ class App extends React.Component {
 
         <h2>Blog app</h2>
 
-        {this.state.user === null ?
-          loginForm() :
+        <Router>
           <div>
-            <Router>
-              <div>
-                <Menu user={this.state.user} logout={this.logout} />
-                {blogForm()}
-                <Route exact path="/" render={() => sortedBlogs() } />
-                <Route exact path="/users" render={() => <UserList />} />
+            <Menu user={this.state.user} logout={this.logout} />
+            {blogForm()}
+            <Route exact path="/" render={() => sortedBlogs() } />
+            <Route exact path="/users" render={() => <UserList />} />
 
-                <Route exact path="/users/:id" render={({ match }) =>
-                  <User match={match} />} />
-              </div>
-            </Router>
+            <Route exact path="/users/:id" render={({ match }) =>
+              <User match={match} />} />
           </div>
-        }
+        </Router>
       </div>
     )
   }
