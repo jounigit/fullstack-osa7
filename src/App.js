@@ -12,8 +12,8 @@ import UserList from './components/UserList'
 import User from './components/User'
 import blogService from './services/blogs'
 import loginService from './services/login'
-//import usersService from './services/users'
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
+import { Container } from 'semantic-ui-react'
 
 
 const Menu = ({ user, logout }) => (
@@ -183,7 +183,7 @@ class App extends React.Component {
     )
 
     return (
-      <div>
+      <Container>
         <Notification />
 
         <h2>Blog app</h2>
@@ -207,7 +207,7 @@ class App extends React.Component {
               <User match={match} />} />
           </div>
         </Router>
-      </div>
+      </Container>
     )
   }
 }
