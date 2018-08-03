@@ -133,7 +133,7 @@ class App extends React.Component {
     return async () => {
       try {
         const blog = this.state.blogs.find(b => b.id === id)
-        const blogToServer = { ...blog, likes: blog.likes+1, user: blog.user._id }
+        const blogToServer = { ...blog, likes: blog.likes+1 }
         const blogToState = { ...blog, likes: blog.likes+1 }
 
         await blogService.update(id, blogToServer)
