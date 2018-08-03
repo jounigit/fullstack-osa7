@@ -12,18 +12,25 @@ import UserList from './components/UserList'
 import User from './components/User'
 import blogService from './services/blogs'
 import loginService from './services/login'
+//import usersService from './services/users'
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
-import { Container } from 'semantic-ui-react'
+import { Container, Menu } from 'semantic-ui-react'
+import { NavLink } from 'react-router-dom'
+import './App.css'
 
-
-const Menu = ({ user, logout }) => (
-  <div className="success">
-    <Link to="/">blogs</Link> &nbsp;
-    <Link to="/users">users</Link> &nbsp;
-    {user
-      ? <em>{user.name} logged in</em>
-      : <Link to="/login">login</Link>
-    }
+const MenuCustom = ({ user, logout }) => (
+  <div className="menu">
+    <NavLink
+      exact activeStyle={{
+        fontWeight: 'bold',
+        color: 'DarkRed'
+      }} to="/">blogs</NavLink> &nbsp;
+    <NavLink
+      exact activeStyle={{
+        fontWeight: 'bold',
+        color: 'DarkRed'
+      }} to="/users">users</NavLink> &nbsp;
+    <em>{user.name} logged in</em> &nbsp;
     {user && <button onClick={logout}>logout</button>}
   </div>
 )
@@ -190,7 +197,8 @@ class App extends React.Component {
 
         <Router>
           <div>
-            <Menu user={this.state.user} logout={this.logout} />
+            <MenuCustom user={this.state.user} logout={this.logout} />
+
             {blogForm()}
             <Route exact path="/" render={() => <BlogList blogs={this.state.blogs} /> } />
             <Route exact path="/blogs/:id" render={({ match }) =>
@@ -226,4 +234,16 @@ export default connect(
 
 <Route exact path="/users/:id" render={({ match }) =>
   <User match={match} />} />
+*/
+/*
+<Menu stackable inverted size='large'>
+  <Menu.Item as={Link} to='/'>
+    blogs
+  </Menu.Item>
+  <Menu.Item as={Link} to='/users'>
+    users
+  </Menu.Item>
+  <em>{this.state.user && this.state.user.name} </em>
+  {this.state.user && <button onClick={this.logout}>logout</button>}
+</Menu>
 */

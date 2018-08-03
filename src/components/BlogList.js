@@ -6,7 +6,8 @@ class BlogList extends React.Component {
   render() {
     const blogStyle = {
       paddingTop: 10,
-      paddingLeft: 2,
+      paddingLeft: 5,
+      paddingBottom: 5,
       border: 'solid',
       borderWidth: 1,
       marginBottom: 5

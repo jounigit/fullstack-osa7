@@ -1,0 +1,42 @@
+@media only screen and (min-width: 768px) and (max-width: 991px) {
+  .ui.container {
+    width: 723px;
+  }
+
+  .ui.grid.container {
+    width: calc( 723px  +  2rem ) !important;
+  }
+
+  .ui.relaxed.grid.container {
+    width: calc( 723px  +  3rem ) !important;
+  }
+
+  .ui.very.relaxed.grid.container {
+    width: calc( 723px  +  5rem ) !important;
+  }
+}
+
+.menuBackgroundColor {
+  background-color: DarkKhaki;
+}
+
+.menu {
+  font-weight: bold;
+  text-decoration: none;
+  text-align: center;
+  color: white;
+  background-color: DarkKhaki;
+  margin: 5px;
+  padding: 10px;
+}
+
+.menu > a {
+    color: white;
+}
+
+.menu > a:hover {
+    color: DarkRed;
+}
+.center-txt{
+text-align: center;
+}
