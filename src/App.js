@@ -193,7 +193,7 @@ class App extends React.Component {
             <Menu user={this.state.user} logout={this.logout} />
             {blogForm()}
             <Route exact path="/" render={() => <BlogList blogs={this.state.blogs} /> } />
-            <Route exact path="/blogs/:id" render={({ match, history }) =>
+            <Route exact path="/blogs/:id" render={({ match }) =>
               <Blog
                 match={match}
                 blogs={this.state.blogs}

@@ -1,6 +1,6 @@
 import React from 'react'
 
-const BlogForm = ({handleSubmit, handleChange, blogTitle, blogAuthor, blogUrl}) => {
+const BlogForm = ({ handleSubmit, handleChange, blogTitle, blogAuthor, blogUrl }) => {
   return (
     <div>
       <h2>create new</h2>

@@ -1,4 +1,5 @@
 import React from 'react'
+import Comments from './Comments'
 import { Redirect } from 'react-router'
 
 class Blog extends React.Component {
@@ -28,6 +29,8 @@ class Blog extends React.Component {
           added by {adder}
         </h5>
         {deletable && <div><button onClick={remove}>delete</button></div>}
+
+        <Comments blog={blog} />
 
       </div>
     )
