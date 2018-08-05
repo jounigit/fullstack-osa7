@@ -9,7 +9,7 @@ const userReducer = (store = [], action) => {
   return store
 }
 
-export const userInit = () => {
+export const usersInit = () => {
   return async (dispatch) => {
     const users = await usersService.getAll()
     dispatch({

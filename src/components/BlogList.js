@@ -1,8 +1,12 @@
 import React from 'react'
-
+import { connect } from 'react-redux'
 import {  Link } from 'react-router-dom'
+import { blogsInit } from '../reducers/blogReducer'
 
 class BlogList extends React.Component {
+  componentDidMount = async () => {
+    this.props.blogsInit()
+  }
   render() {
     const blogStyle = {
       paddingTop: 10,
@@ -12,6 +16,8 @@ class BlogList extends React.Component {
       borderWidth: 1,
       marginBottom: 5
     }
+    console.log('BLOGLIST: ', this.props.blogs)
+    if (this.props.blogs.length !== 0) {
     return (
       <div>
         <h2>blogs</h2>
@@ -29,6 +35,30 @@ class BlogList extends React.Component {
       </div>
     )
   }
+
+  return (
+    <div>
+      <h2>waiting</h2>
+
+      </div>
+  )
+
 }
 
-export default BlogList
+}
+
+const mapStateToProps = (state) => {
+  return {
+    blogs: state.blogs
+  }
+}
+
+const mapDispatchToProps = {
+  //notify,
+  blogsInit
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(BlogList)

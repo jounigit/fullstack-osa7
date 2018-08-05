@@ -1,6 +1,8 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { userInit } from './reducers/userReducer'
+//import usersService from './services/users'
+import { blogsInit } from './reducers/blogReducer'
+import { usersInit } from './reducers/userReducer'
 import { notify } from './reducers/notificationReducer'
 import Blog from './components/Blog'
 import BlogList from './components/BlogList'
@@ -12,9 +14,8 @@ import UserList from './components/UserList'
 import User from './components/User'
 import blogService from './services/blogs'
 import loginService from './services/login'
-//import usersService from './services/users'
-import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
-import { Container, Menu } from 'semantic-ui-react'
+import { BrowserRouter as Router, Route } from 'react-router-dom'
+import { Container } from 'semantic-ui-react'
 import { NavLink } from 'react-router-dom'
 import './App.css'
 
@@ -39,7 +40,7 @@ class App extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      blogs: [],
+      //blogs: [],
       blogTitle: '',
       blogAuthor: '',
       blogUrl: '',
@@ -51,15 +52,12 @@ class App extends React.Component {
   }
 
   componentDidMount = async () => {
-    const blogs = await blogService.getAll()
-    this.setState({ blogs })
-
-    this.props.userInit()
 
     const loggedUserJSON = window.localStorage.getItem('loggedBlogAppUser')
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON)
       this.setState({ user })
+      //this.props.usersInit()
     }
   }
 
@@ -163,7 +161,9 @@ class App extends React.Component {
     this.setState({ [event.target.name]: event.target.value })
   }
 
+
   render() {
+
     if (this.state.user === null) {
       return (
         <LoginForm
@@ -194,13 +194,14 @@ class App extends React.Component {
         <Notification />
 
         <h2>Blog app</h2>
-
+        <button onClick={ () => this.props.usersInit() }>Init users</button>
+        <button onClick={ () => this.props.blogsInit() }>Init blogs</button>
         <Router>
           <div>
             <MenuCustom user={this.state.user} logout={this.logout} />
 
             {blogForm()}
-            <Route exact path="/" render={() => <BlogList blogs={this.state.blogs} /> } />
+            <Route exact path="/" render={() => <BlogList /> } />
             <Route exact path="/blogs/:id" render={({ match }) =>
               <Blog
                 match={match}
@@ -221,8 +222,9 @@ class App extends React.Component {
 }
 
 const mapDispatchToProps = {
-  userInit,
-  notify
+  notify,
+  usersInit,
+  blogsInit
 }
 
 export default connect(
