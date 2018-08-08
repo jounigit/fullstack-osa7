@@ -1,7 +1,6 @@
 import blogService from '../services/blogs'
 import { INIT_BLOGS, LIKE_BLOG, CREATE_BLOG, DELETE_BLOG, NEW_MSG, ADD_COMMENT } from './actionTypes'
 
-
 const blogReducer = (state = [], action) => {
   switch (action.type) {
   case INIT_BLOGS:
@@ -17,7 +16,6 @@ const blogReducer = (state = [], action) => {
   default:
     return state
   }
-
 }
 
 export const initBlogs = () => async (dispatch) => {

@@ -1,41 +1,43 @@
 import React from 'react'
-import PropTypes from 'prop-types'
+import { connect } from 'react-redux'
+import { login } from '../reducers/loginReducer'
+//import PropTypes from 'prop-types'
 
-const LoginForm = ({ handleSubmit, handleChange, username, password }) => {
-  return (
-    <div>
-      <h2>Kirjaudu sovellukseen</h2>
+class LoginForm extends React.Component {
+  handleSubmit = async (e) => {
+    e.preventDefault()
 
-      <form onSubmit={handleSubmit}>
-        <div>
-          käyttäjätunnus
-          <input
-            type="text"
-            name="username"
-            value={username}
-            onChange={handleChange}
-          />
-        </div>
-        <div>
-          salasana
-          <input
-            type="password"
-            name="password"
-            value={password}
-            onChange={handleChange}
-          />
-        </div>
-        <button type="submit">kirjaudu</button>
-      </form>
-    </div>
-  )
+    this.props.login(e.target.username.value, e.target.password.value)
+    e.target.username.value = ''
+    e.target.password.value = ''
+  }
+  render () {
+    return (
+      <div>
+        <h2>Kirjaudu sovellukseen</h2>
+
+        <form onSubmit={this.handleSubmit}>
+          <div>
+            käyttäjätunnus
+            <input type="text" name="username" />
+          </div>
+          <div>
+            salasana
+            <input type="password" name="password" />
+          </div>
+          <button type="submit">kirjaudu</button>
+        </form>
+      </div>
+    )
+  }
 }
 
 LoginForm.propTypes = {
-  handleSubmit: PropTypes.func.isRequired,
-  handleChange: PropTypes.func.isRequired,
-  username: PropTypes.string.isRequired,
-  password: PropTypes.string.isRequired
+//  username: PropTypes.string.isRequired,
+  //password: PropTypes.string.isRequired
 }
 
-export default LoginForm
+export default connect(
+  null,
+  { login }
+)(LoginForm)

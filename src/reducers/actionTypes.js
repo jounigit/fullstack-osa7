@@ -6,6 +6,9 @@ export const ADD_COMMENT = 'ADD_COMMENT'
 
 export const INIT_USERS = 'INIT_USERS'
 
+export const LOGIN = 'LOGIN'
+export const LOGOUT = 'LOGOUT'
+
 export const NEW_MSG = 'NEW_MSG'
 export const HIDE_MSG = 'HIDE_MSG'
 

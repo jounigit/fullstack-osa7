@@ -1,17 +1,13 @@
 import React from 'react'
 import { connect } from 'react-redux'
-
-import { notify } from './reducers/notificationReducer'
+import { logout } from './reducers/loginReducer'
 import Blog from './components/Blog'
 import BlogList from './components/BlogList'
 import Notification from './components/Notification'
-
 import LoginForm from './components/LoginForm'
 import BlogForm from './components/BlogForm'
 import UserList from './components/UserList'
 import User from './components/User'
-import blogService from './services/blogs'
-import loginService from './services/login'
 import { BrowserRouter as Router, Route } from 'react-router-dom'
 import { Container } from 'semantic-ui-react'
 import { NavLink } from 'react-router-dom'
@@ -35,21 +31,8 @@ const MenuCustom = ({ user, logout }) => (
 )
 
 class App extends React.Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      blogTitle: '',
-      blogAuthor: '',
-      blogUrl: '',
-      username: '',
-      password: '',
-      removed: false,
-      user: null
-    }
-  }
 
   componentDidMount = async () => {
-
     const loggedUserJSON = window.localStorage.getItem('loggedBlogAppUser')
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON)
@@ -57,51 +40,13 @@ class App extends React.Component {
     }
   }
 
-  login = async (event) => {
-    event.preventDefault()
-    console.log('login in with', this.state.username, this.state.password)
-    try {
-      const user = await loginService.login({
-        username: this.state.username,
-        password: this.state.password
-      })
-
-      window.localStorage.setItem('loggedBlogAppUser', JSON.stringify(user))
-      blogService.setToken(user.token)
-
-      this.setState({ username: '', password: '', user })
-      this.props.notify(`'${this.state.user.name}' logged in`, 10, 'success')
-    } catch(exception) {
-      this.props.notify('wrong username or password', 10, 'error')
-      this.setState({ username: '', password: '' })
-    }
-  }
-
-  logout = async (event) => {
-    event.preventDefault()
-    window.localStorage.removeItem('loggedBlogAppUser')
-    this.props.notify(`'${this.state.user.name}' logged out`, 10, 'success')
-    this.setState({ user: null })
-  }
-
-  handleLoginFieldChange = (event) => {
-    this.setState({ [event.target.name]: event.target.value })
-  }
-
   render() {
-
-    if (this.state.user === null) {
+    const { user, logout } = this.props
+    if (this.props.user === null) {
       return (
-        <LoginForm
-          visible={this.state.visible}
-          username={this.state.username}
-          password={this.state.password}
-          handleChange={this.handleLoginFieldChange}
-          handleSubmit={this.login}
-        />
+        <LoginForm />
       )
     }
-
     return (
       <Container>
 
@@ -111,7 +56,7 @@ class App extends React.Component {
 
         <Router>
           <div>
-            <MenuCustom user={this.state.user} logout={this.logout} />
+            <MenuCustom user={user} logout={logout} />
 
             <BlogForm />
             <Route exact path="/" render={() => <BlogList /> } />
@@ -131,29 +76,17 @@ class App extends React.Component {
   }
 }
 
+const mapStateToProps = (state) => {
+  return {
+    user: state.user
+  }
+}
+
 const mapDispatchToProps = {
-  notify
+  logout
 }
 
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 )(App)
-/*
-<Route exact path="/users/:id" component={User} />
-
-<Route exact path="/users/:id" render={({ match }) =>
-  <User match={match} />} />
-*/
-/*
-<Menu stackable inverted size='large'>
-  <Menu.Item as={Link} to='/'>
-    blogs
-  </Menu.Item>
-  <Menu.Item as={Link} to='/users'>
-    users
-  </Menu.Item>
-  <em>{this.state.user && this.state.user.name} </em>
-  {this.state.user && <button onClick={this.logout}>logout</button>}
-</Menu>
-*/
