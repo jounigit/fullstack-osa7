@@ -1,28 +1,17 @@
 import React from 'react'
-import { usersInit } from '../reducers/userReducer'
+import { initUsers } from '../reducers/userReducer'
 import { connect } from 'react-redux'
 import {  Link } from 'react-router-dom'
 
 class UserList extends React.Component {
-/*  componentDidMount = async () => {
-    try {
-      const users = await this.props.usersInit()
-      console.log(users)
-    }  catch (exception) {
-      console.log('INIT USER::', exception)
-    }
-  }*/
-  componentDidMount = async () => {
-    this.props.usersInit()
-  }
   render() {
     //console.log(this.props.usersInit())
     console.log('USERLIST: ', this.props.users)
 
-if (this.props.users.length !== 0) {
+    if (this.props.users.length !== 0) {
       return (
         <div>
-        {console.log('IN USERLIST: ', this.props.users)}
+          {console.log('IN USERLIST: ', this.props.users)}
           <h2>users</h2>
           perse
           <table>
@@ -35,27 +24,26 @@ if (this.props.users.length !== 0) {
                 </td>
               </tr>
               {this.props.users.map(user =>
-                  <tr key={user.id}>
-                    <td>
-                      <Link to={`/users/${user.id}`}><div>{user.name}</div></Link>
+                <tr key={user.id}>
+                  <td>
+                    <Link to={`/users/${user.id}`}><div>{user.name}</div></Link>
 
-                    </td>
-                    <td>
-                      {user.blogs ? user.blogs.length : 0 }
-                    </td>
-                  </tr>
-                )}
+                  </td>
+                  <td>
+                    {user.blogs ? user.blogs.length : 0 }
+                  </td>
+                </tr>
+              )}
             </tbody>
           </table>
         </div>
       )
-}
-return (
-  <div>
-    <h2>users</h2>
-      <button onClick={ () => this.props.usersInit() }>Init users</button>
-    </div>
-)
+    }
+    return (
+      <div>
+        <h2>users</h2>
+      </div>
+    )
   }
 }
 
@@ -67,7 +55,7 @@ const mapStateToProps = (state) => {
 
 export default connect(
   mapStateToProps,
-  { usersInit }
+  { initUsers }
 )(UserList)
 
 /*  {this.props.users.map(user =>
@@ -80,7 +68,7 @@ export default connect(
       </td>
     </tr>
   )} */
-  /*
+/*
   <table>
     <tbody>
       <tr>

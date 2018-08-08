@@ -1,48 +1,24 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { notify } from '../reducers/notificationReducer'
-import blogService from '../services/blogs'
+import { addComment } from '../reducers/blogReducer'
 
 class Comments extends React.Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      comments: [],
-      blog: null
-    }
-  }
-
-  componentDidMount = async () => {
-    const { blog } = this.props
-    this.setState({
-      comments: blog.comments,
-      blog: blog
-    })
-  }
 
   handleSubmit = async (e) => {
     e.preventDefault()
-    try {
-      const content = e.target.comment.value
-      e.target.comment.value = ''
-
-      const commentObj = {
-        comment: content
-      }
-
-      await blogService.addComment(this.state.blog.id, commentObj)
-
-      this.setState({
-        comments: this.state.comments.concat(content)
-      })
-      this.props.notify(`your comment '${content}'`, 10)
-    } catch (exception) {
-      this.props.notify('updating error', 10, 'error')
+    const id = e.target.id.value
+    const commentObj = {
+      comment: e.target.comment.value
     }
+    this.props.addComment(id, commentObj)
+    this.props.notify(`your comment '${e.target.comment.value}'`, 5, 'success')
+    e.target.comment.value = ''
   }
 
   render() {
-    const comments = this.state.comments.map((c, index) =>
+    const { blog } = this.props
+    const comments = blog.comments.map((c, index) =>
       <li key={index}>
         {c}
       </li>
@@ -52,8 +28,11 @@ class Comments extends React.Component {
         <h3>comments</h3>
 
         <form onSubmit={this.handleSubmit}  style={{ display: 'inline !important' }}>
-          <div><input name='comment'/></div>
-          <button>add comment</button>
+          <div>
+            <input type="hidden" name='id' value={blog.id} />
+            <input type="text" name='comment' />
+            <button>add comment</button>
+          </div>
         </form>
 
         <ul>
@@ -66,5 +45,5 @@ class Comments extends React.Component {
 
 export default connect(
   null,
-  { notify }
+  { notify, addComment }
 )(Comments)

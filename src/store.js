@@ -1,19 +1,26 @@
 import { createStore, combineReducers, applyMiddleware } from 'redux'
 import thunk from 'redux-thunk'
-import userReducer from './reducers/userReducer'
-import blogReducer from './reducers/blogReducer'
-import notificationReducer from './reducers/notificationReducer'
+import { composeWithDevTools } from 'redux-devtools-extension'
+import users from './reducers/userReducer'
+import blogs from './reducers/blogReducer'
+import notification from './reducers/notificationReducer'
+import errors from './reducers/errorReducer'
 
 
 const reducer = combineReducers({
-  blogs: blogReducer,
-  users: userReducer,
-  notification: notificationReducer
+  blogs,
+  users,
+  notification,
+  errors
 })
 
 const store = createStore(
   reducer,
-  applyMiddleware(thunk)
+  composeWithDevTools(
+    applyMiddleware(thunk)
+  )
 )
+
+console.log(store.getState())
 
 export default store

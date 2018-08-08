@@ -1,12 +1,8 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import {  Link } from 'react-router-dom'
-import { blogsInit } from '../reducers/blogReducer'
 
 class BlogList extends React.Component {
-  componentDidMount = async () => {
-    this.props.blogsInit()
-  }
   render() {
     const blogStyle = {
       paddingTop: 10,
@@ -18,33 +14,30 @@ class BlogList extends React.Component {
     }
     console.log('BLOGLIST: ', this.props.blogs)
     if (this.props.blogs.length !== 0) {
+      return (
+        <div>
+          <h2>blogs</h2>
+          {this.props.blogs.map(blog =>
+            <div key={blog.id}  style={blogStyle}>
+
+              <Link to={`/blogs/${blog.id}`}>
+                <div className="titleAndAuthor">
+                  {blog.title} {blog.author}
+                </div>
+              </Link>
+
+            </div>
+          )}
+        </div>
+      )
+    }
+
     return (
       <div>
-        <h2>blogs</h2>
-        {this.props.blogs.map(blog =>
-          <div key={blog.id}  style={blogStyle}>
-
-            <Link to={`/blogs/${blog.id}`}>
-              <div className="titleAndAuthor">
-                {blog.title} {blog.author}
-              </div>
-            </Link>
-
-          </div>
-        )}
+        <h2>waiting</h2>
       </div>
     )
   }
-
-  return (
-    <div>
-      <h2>waiting</h2>
-
-      </div>
-  )
-
-}
-
 }
 
 const mapStateToProps = (state) => {
@@ -53,12 +46,7 @@ const mapStateToProps = (state) => {
   }
 }
 
-const mapDispatchToProps = {
-  //notify,
-  blogsInit
-}
-
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  null
 )(BlogList)
