@@ -2,88 +2,14 @@ const supertest = require('supertest')
 const { app, server } = require('../index')
 const api = supertest(app)
 const Blog = require('../models/blog')
-const User = require('../models/user')
+//const User = require('../models/user')
 const helper = require('./test_helper')
-
-// User tests
-describe.only('when there is initially one user at db', async () => {
-  beforeAll(async () => {
-    await User.remove({})
-    const user = new User({ username: 'root', password: 'sekret' })
-    await user.save()
-  })
-
-  test('POST /api/users succeeds with a fresh username', async () => {
-    const usersBefore = await helper.usersInDb()
-
-    const newUser = {
-      username: 'mluukkai',
-      name: 'Matti Luukkainen',
-      password: 'salainen',
-      adult: true
-    }
-
-    await api
-      .post('/api/users')
-      .send(newUser)
-      .expect(200)
-      .expect('Content-Type', /application\/json/)
-
-    const usersAfter = await helper.usersInDb()
-    expect(usersAfter.length).toBe(usersBefore.length+1)
-    const usernames = usersAfter.map(u => u.username)
-    expect(usernames).toContain(newUser.username)
-  })
-
-  test('POST /api/users fails with proper statuscode and message if username already taken', async () => {
-    const usersBefore = await helper.usersInDb()
-
-    const newUser = {
-      username: 'root',
-      name: 'Superuser',
-      password: 'salainen'
-    }
-
-    const result = await api
-      .post('/api/users')
-      .send(newUser)
-      .expect(400)
-      .expect('Content-Type', /application\/json/)
-
-    expect(result.body).toEqual({ error: 'username must be unique' })
-
-    const usersAfter = await helper.usersInDb()
-    expect(usersAfter.length).toBe(usersBefore.length)
-  })
-
-  test('POST /api/users fails with too short username', async () => {
-    const usersBefore = await helper.usersInDb()
-
-    const newUser = {
-      username: 'ly',
-      name: 'Liian Lyhyt',
-      password: 'salainen'
-    }
-
-    const result = await api
-      .post('/api/users')
-      .send(newUser)
-      .expect(400)
-      .expect('Content-Type', /application\/json/)
-
-    expect(result.body).toEqual({ error: 'username must be at least 3 characters' })
-
-    const usersAfter = await helper.usersInDb()
-    expect(usersAfter.length).toBe(usersBefore.length)
-  })
-
-})
 
 // Blog tests
 describe('when there is initially some blogs saved', async () => {
+
   beforeAll(async () => {
     await Blog.remove({})
-
     const blogObjects = helper.initialBlogs.map(blog => new Blog(blog))
     await Promise.all(blogObjects.map(blog => blog.save()))
   })
@@ -125,18 +51,25 @@ describe('when there is initially some blogs saved', async () => {
       .expect(404)
   })
 
-  /*
-  test('400 is returned by GET /api/notes/:id with invalid id', async () => {
-    const invalidId = 'id=5b18de12a45'
-
-    const response = await api
-      .get(`/api/notes/${invalidId}`)
-      .expect(400)
-  }) */
 
   describe('addition of a new blog', async () => {
   // Test adding
+    let token
+    beforeAll( async () => {
+      const validUser = await api
+        .post('/api/login')
+        .send({
+          username: 'herrax',
+          password: 'salainen',
+        })
+
+      token =  validUser.body.token
+    })
+
     test('a valid blog can be added', async () => {
+
+      //console.log('BLOGTEST TOKEN:: ', token )
+
       const blogsBefore = await helper.blogsInDb()
 
       const newBlog = {
@@ -146,23 +79,39 @@ describe('when there is initially some blogs saved', async () => {
         likes: 0
       }
 
-      const response = await api
+      await api
         .post('/api/blogs')
+        .set('Authorization', `Bearer ${token}`)
         .send(newBlog)
         .expect(200)
         .expect('Content-Type', /application\/json/)
 
       const blogsAfter = await helper.blogsInDb()
-      console.log(response.body)
+      //console.log(response.body)
       expect(blogsAfter.length).toBe(blogsBefore.length + 1)
 
-      /* KATSO KOMMENTTI 1.
-       Tämä testi näyttää konsolissa ja testin
-      virheilmoituksessa, että pitäisi mennä läpi eli ovat samat
-      Missä vika???
+      const contents = blogsAfter.map(r => r.title)
+      expect(contents).toContain('TDD harms architecture')
+    })
 
-      expect(blogsAfter).toContainEqual(response.body)
-      */
+    test('fails if an Unauthorized user try to add blog', async () => {
+      const blogsBefore = await helper.blogsInDb()
+
+      const newBlog = {
+        title: 'TDD harms architecture',
+        author: 'Robert C. Martin',
+        url: 'http://blog.cleancoder.com/uncle-bob/2017/03/03/TDD-Harms-Architecture.html',
+        likes: 0
+      }
+
+      await api
+        .post('/api/blogs')
+        .send(newBlog)
+        .expect(401)
+        .expect('Content-Type', /application\/json/)
+
+      const blogsAfter = await helper.blogsInDb()
+      expect(blogsAfter.length).toBe(blogsBefore.length)
 
       const contents = blogsAfter.map(r => r.title)
       expect(contents).toContain('TDD harms architecture')
@@ -181,6 +130,7 @@ describe('when there is initially some blogs saved', async () => {
       await api
         .post('/api/blogs')
         .send(newBlog)
+        .set('Authorization', `Bearer ${token}`)
         .expect(400)
 
       const blogsAfter = await helper.blogsInDb()
@@ -199,6 +149,7 @@ describe('when there is initially some blogs saved', async () => {
       const response = await api
         .post('/api/blogs')
         .send(newBlog)
+        .set('Authorization', `Bearer ${token}`)
         .expect(200)
         .expect('Content-Type', /application\/json/)
 
@@ -206,10 +157,20 @@ describe('when there is initially some blogs saved', async () => {
     }) /**/
   })
 
-  describe('deletion of a note', async () => {
+  describe('deletion of a blog', async () => {
     let addedBlog
+    let token
 
     beforeAll(async () => {
+      const validUser = await api
+        .post('/api/login')
+        .send({
+          username: 'herrax',
+          password: 'salainen',
+        })
+
+      token =  validUser.body.token
+
       addedBlog = new Blog({
         title: 'Blog to be deleted',
         author: 'Robert C. Martin',
@@ -223,6 +184,7 @@ describe('when there is initially some blogs saved', async () => {
 
       await api
         .delete(`/api/blogs/${addedBlog._id}`)
+        .set('Authorization', `Bearer ${token}`)
         .expect(204)
 
       const blogsAfter = await helper.blogsInDb()
@@ -230,6 +192,18 @@ describe('when there is initially some blogs saved', async () => {
       const contents = blogsAfter.map(r => r.title)
       expect(contents).not.toContain(addedBlog.title)
       expect(blogsAfter.length).toBe(blogsBefore.length - 1)
+    })
+
+    test('DELETE fails without proper token', async () => {
+      const blogsBefore = await helper.blogsInDb()
+
+      await api
+        .delete(`/api/blogs/${addedBlog._id}`)
+        .expect(401)
+
+      const blogsAfter = await helper.blogsInDb()
+
+      expect(blogsAfter.length).toBe(blogsBefore.length )
     })
   })
 
