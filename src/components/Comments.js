@@ -2,6 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { notify } from '../reducers/notificationReducer'
 import { addComment } from '../reducers/blogReducer'
+import { Form, Header, Icon, Divider } from 'semantic-ui-react'
 
 class Comments extends React.Component {
 
@@ -25,16 +26,23 @@ class Comments extends React.Component {
     )
     return (
       <div>
-        <h3>comments</h3>
 
-        <form onSubmit={this.handleSubmit}  style={{ display: 'inline !important' }}>
-          <div>
-            <input type="hidden" name='id' value={blog.id} />
-            <input type="text" name='comment' />
-            <button>add comment</button>
-          </div>
-        </form>
-
+        <div>
+          <Header as='h3' color='grey'>
+            <Icon name='comments' />
+            comments
+          </Header>
+        </div>
+        <Divider />
+        <div>
+          <Form onSubmit={this.handleSubmit}>
+            <Form.Group>
+              <input type="hidden" name='id' value={blog.id} />
+              <Form.Input placeholder='comment...' name='comment' />
+              <Form.Button size='tiny' content='add' />
+            </Form.Group>
+          </Form>
+        </div>
         <ul>
           {comments}
         </ul>

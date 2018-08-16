@@ -8,27 +8,10 @@ import LoginForm from './components/LoginForm'
 import BlogForm from './components/BlogForm'
 import UserList from './components/UserList'
 import User from './components/User'
+import MenuCustom from './components/MenuCustom'
 import { BrowserRouter as Router, Route } from 'react-router-dom'
 import { Container } from 'semantic-ui-react'
-import { NavLink } from 'react-router-dom'
 import './App.css'
-
-const MenuCustom = ({ user, logout }) => (
-  <div className="menu">
-    <NavLink
-      exact activeStyle={{
-        fontWeight: 'bold',
-        color: 'DarkRed'
-      }} to="/">blogs</NavLink> &nbsp;
-    <NavLink
-      exact activeStyle={{
-        fontWeight: 'bold',
-        color: 'DarkRed'
-      }} to="/users">users</NavLink> &nbsp;
-    <em>{user.name} logged in</em> &nbsp;
-    {user && <button onClick={logout}>logout</button>}
-  </div>
-)
 
 class App extends React.Component {
 

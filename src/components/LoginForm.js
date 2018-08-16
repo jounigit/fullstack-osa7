@@ -1,6 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { login } from '../reducers/loginReducer'
+import { Form, Button, Header, Card } from 'semantic-ui-react'
 //import PropTypes from 'prop-types'
 
 class LoginForm extends React.Component {
@@ -13,21 +14,24 @@ class LoginForm extends React.Component {
   }
   render () {
     return (
-      <div>
-        <h2>Kirjaudu sovellukseen</h2>
-
-        <form onSubmit={this.handleSubmit}>
-          <div>
-            käyttäjätunnus
-            <input type="text" name="username" />
-          </div>
-          <div>
-            salasana
-            <input type="password" name="password" />
-          </div>
-          <button type="submit">kirjaudu</button>
-        </form>
-      </div>
+      <Card centered style={{ marginTop: 20 }}>
+        <Card.Content>
+          <Header as='h2' color='green'>Kirjaudu sovellukseen</Header>
+        </Card.Content>
+        <Card.Content>
+          <Form onSubmit={this.handleSubmit}>
+            <Form.Field>
+              <label>käyttäjätunnus</label>
+              <input type="text" name="username" />
+            </Form.Field>
+            <Form.Field>
+              <label>salasana</label>
+              <input type="password" name="password" />
+            </Form.Field>
+            <Button basic color='green'>kirjaudu</Button>
+          </Form>
+        </Card.Content>
+      </Card>
     )
   }
 }

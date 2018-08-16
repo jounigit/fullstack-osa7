@@ -20,13 +20,22 @@
   background-color: DarkKhaki;
 }
 
+.toRight {
+  float: right;
+}
+
+div.centered {
+    max-width: 500px;
+    margin: auto;
+}
+
 .menu {
   font-weight: bold;
   text-decoration: none;
   text-align: center;
   color: white;
   background-color: DarkKhaki;
-  margin: 5px;
+  margin-bottom: 40px;
   padding: 10px;
 }
 

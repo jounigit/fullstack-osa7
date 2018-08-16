@@ -4,6 +4,7 @@ import { notify } from '../reducers/notificationReducer'
 import Comments from './Comments'
 import { Redirect } from 'react-router'
 import { like, deleteBlog } from '../reducers/blogReducer'
+import { Button, Header, Card } from 'semantic-ui-react'
 
 class Blog extends React.Component {
   toggleLike = (id, content) => () => {
@@ -33,33 +34,42 @@ class Blog extends React.Component {
     const deletable = blog.user === undefined || blog.user.username === username
 
     return (
-      <div>
-        <h2>
-          {blog.title} {blog.author}
-        </h2>
-        <div>
+      <Card centered>
+
+        <Card.Content>
+          <Header as='h1'>
+            {blog.title}
+          </Header>
+          <Header as='h3'>
+            {blog.author}
+          </Header>
           <a href={blog.url}>{blog.url}</a>
-        </div>
-        <h5>
-          {blog.likes} likes
-          <button onClick={this.toggleLike(this.props.match.params.id, blog.title)}>
-          like
-          </button>
-        </h5>
-        <h5>
-          added by {adder}
-        </h5>
-        {deletable &&
-          <div>
-            <button
-              onClick={this.remove(this.props.match.params.id, blog.title, blog.author)}>
-              delete
-            </button>
-          </div>}
+        </Card.Content>
+        <Card.Content extra>
+          <Header as='h5'>
+            added by {adder}
 
-        <Comments blog={blog} />
-
-      </div>
+            {deletable &&
+              <Button negative  size='mini' floated='right'
+                onClick={this.remove(this.props.match.params.id, blog.title, blog.author)}>
+                delete
+              </Button>
+            }
+          </Header>
+          <Button
+            size='mini' floated='right'
+            color='green'
+            content='Likes'
+            icon='thumbs up'
+            label={{ as: 'a', basic: true, pointing: 'right', content: `${blog.likes}` }}
+            labelPosition='left'
+            onClick={this.toggleLike(this.props.match.params.id, blog.title)}
+          />
+        </Card.Content>
+        <Card.Content>
+          <Comments blog={blog} />
+        </Card.Content>
+      </Card>
     )
   }
 }

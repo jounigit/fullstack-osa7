@@ -15,30 +15,30 @@ describe('<App />', () => {
       app = mount(<App />)
     })
 
-      let savedItems = {}
+    let savedItems = {}
 
-      const localStorage = {
-        setItem: (key, item) => {
-          savedItems[key] = item
-        },
-        getItem: (key) => savedItems[key],
-        clear: savedItems = {}
-      }
+    const localStorage = {
+      setItem: (key, item) => {
+        savedItems[key] = item
+      },
+      getItem: (key) => savedItems[key],
+      clear: savedItems = {}
+    }
 
-      const user = {
-        username: 'tester',
-        token: '1231231214',
-        name: 'Teuvo Testaaja'
-      }
-      localStorage.setItem('loggedBlogAppUser', JSON.stringify(user))
-      const localStorageObj = localStorage.getItem('loggedBlogAppUser')
-      window.localStorage = localStorage
+    const user = {
+      username: 'tester',
+      token: '1231231214',
+      name: 'Teuvo Testaaja'
+    }
+    localStorage.setItem('loggedBlogAppUser', JSON.stringify(user))
+    const localStorageObj = localStorage.getItem('loggedBlogAppUser')
+    window.localStorage = localStorage
 
     it('all blogs are rendered', () => {
       app.update()
       const blogComponents = app.find(Blog)
       console.log('OBJ:: ', JSON.parse(localStorageObj))
-    expect(blogComponents.length).toEqual(blogService.blogs.length)
+      expect(blogComponents.length).toEqual(blogService.blogs.length)
     })
   })
 })

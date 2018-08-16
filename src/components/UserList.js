@@ -2,6 +2,7 @@ import React from 'react'
 import { initUsers } from '../reducers/userReducer'
 import { connect } from 'react-redux'
 import {  Link } from 'react-router-dom'
+import { Table } from 'semantic-ui-react'
 
 class UserList extends React.Component {
   render() {
@@ -10,32 +11,30 @@ class UserList extends React.Component {
 
     if (this.props.users.length !== 0) {
       return (
-        <div>
+        <div   className='centered'>
           {console.log('IN USERLIST: ', this.props.users)}
-          <h2>users</h2>
-          perse
-          <table>
-            <tbody>
-              <tr>
-                <td>
-                </td>
-                <td>
-                  <strong>blogs added</strong>
-                </td>
-              </tr>
-              {this.props.users.map(user =>
-                <tr key={user.id}>
-                  <td>
-                    <Link to={`/users/${user.id}`}><div>{user.name}</div></Link>
+          <h2>Users</h2>
+          <Table basic>
+            <Table.Header>
+              <Table.Row>
+                <Table.HeaderCell>User</Table.HeaderCell>
+                <Table.HeaderCell>blogs added</Table.HeaderCell>
+              </Table.Row>
+            </Table.Header>
 
-                  </td>
-                  <td>
+            <Table.Body>
+              {this.props.users.map(user =>
+                <Table.Row key={user.id}>
+                  <Table.Cell>
+                    <Link to={`/users/${user.id}`}><div>{user.name}</div></Link>
+                  </Table.Cell>
+                  <Table.Cell>
                     {user.blogs ? user.blogs.length : 0 }
-                  </td>
-                </tr>
+                  </Table.Cell>
+                </Table.Row>
               )}
-            </tbody>
-          </table>
+            </Table.Body>
+          </Table>
         </div>
       )
     }
