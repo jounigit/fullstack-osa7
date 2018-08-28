@@ -24,8 +24,7 @@ class Blog extends React.Component {
   }
 
   render() {
-    const { blogs, username } = this.props
-    const blog = blogs.find(b => b.id === this.props.match.params.id)
+    const { username, blog } = this.props
 
     if ( blog === undefined ) {
       return <Redirect to='/' />
@@ -63,7 +62,7 @@ class Blog extends React.Component {
             icon='thumbs up'
             label={{ as: 'a', basic: true, pointing: 'right', content: `${blog.likes}` }}
             labelPosition='left'
-            onClick={this.toggleLike(this.props.match.params.id, blog.title)}
+            onClick={this.toggleLike(blog.id, blog.title)}
           />
         </Card.Content>
         <Card.Content>
@@ -74,13 +73,7 @@ class Blog extends React.Component {
   }
 }
 
-const mapStateToProps = (state) => {
-  return {
-    blogs: state.blogs
-  }
-}
-
 export default connect(
-  mapStateToProps,
+  null,
   { notify, like, deleteBlog }
 )(Blog)

@@ -1,8 +1,8 @@
 import React from 'react'
 import { shallow } from 'enzyme'
-import SimpleBlog from './SimpleBlog'
+import SimpleBlog from '../components/SimpleBlog'
 
-describe.only('<SimpleBlog />', () => {
+describe.skip('<SimpleBlog />', () => {
   it('renders title', () => {
     const blog = {
       title: 'Komponenttitestaus tapahtuu jestillä ja enzymellä',

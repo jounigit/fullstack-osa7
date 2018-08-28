@@ -1,9 +1,18 @@
 import React from 'react'
+import Enzyme, { mount } from 'enzyme'
 import { shallow } from 'enzyme'
 import Adapter from 'enzyme-adapter-react-16'
 import Blog from './Blog'
 
-describe.only('<Blog />', () => {
+Enzyme.configure({ adapter: new Adapter() })
+
+function setup() {
+  const props = {
+    blogs: PropTypes.array
+  }
+
+
+describe.skip('<Blog />', () => {
   let blogComponent
 
   beforeEach(() => {
@@ -13,7 +22,6 @@ describe.only('<Blog />', () => {
         author='Testeri'
         url='test.com'
         likes='0'
-        name='anonymous'
       />
     )
   })

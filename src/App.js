@@ -13,23 +13,20 @@ import { BrowserRouter as Router, Route } from 'react-router-dom'
 import { Container } from 'semantic-ui-react'
 import './App.css'
 
-class App extends React.Component {
-
-  componentDidMount = async () => {
-    const loggedUserJSON = window.localStorage.getItem('loggedBlogAppUser')
-    if (loggedUserJSON) {
-      const user = JSON.parse(loggedUserJSON)
-      this.setState({ user })
-    }
-  }
+export class App extends React.Component {
 
   render() {
     const { user, logout } = this.props
+
     if (this.props.user === null) {
       return (
         <LoginForm />
       )
     }
+
+    const blogById = (id) =>
+      this.props.blogs.find(blog => blog.id === id)
+
     return (
       <Container>
 
@@ -45,8 +42,8 @@ class App extends React.Component {
             <Route exact path="/" render={() => <BlogList /> } />
             <Route exact path="/blogs/:id" render={({ match }) =>
               <Blog
-                match={match}
-                username={this.state.user.username}
+                blog = {blogById(match.params.id)}
+                username={user.username}
               />} />
             <Route exact path="/users" render={() => <UserList />} />
 
@@ -61,7 +58,8 @@ class App extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    user: state.user
+    user: state.user,
+    blogs: state.blogs
   }
 }
 

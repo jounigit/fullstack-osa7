@@ -1,7 +1,7 @@
 import usersService from '../services/users'
 import { INIT_USERS } from './actionTypes'
 
-const userReducer = (state =[], action) => {
+const userReducer = (state = [], action) => {
 
   if (action.type === INIT_USERS) {
     return action.data
