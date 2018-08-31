@@ -1,6 +1,6 @@
 import loginService from '../services/login'
 import blogService from '../services/blogs'
-import { LOGIN, LOGOUT, NEW_MSG } from './actionTypes'
+import { LOGIN, LOGOUT, LOGGEDIN, NEW_MSG } from './actionTypes'
 
 export const login = (username, password) => async (dispatch) => {
   try {
@@ -33,9 +33,19 @@ export const logout = () => (dispatch) => {
   })
 }
 
+export const loggedUser = (user) => async (dispatch) => {
+  //console.log('LOGGEDUSER:: ', user)
+  dispatch({
+    type: LOGGEDIN,
+    user
+  })
+}
+
 const loginReducer = (state = null, action) => {
   switch (action.type) {
   case LOGIN:
+    return action.user
+  case LOGGEDIN:
     return action.user
   case LOGOUT:
     return null

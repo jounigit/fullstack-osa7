@@ -50,7 +50,7 @@ class Blog extends React.Component {
 
             {deletable &&
               <Button negative  size='mini' floated='right'
-                onClick={this.remove(this.props.match.params.id, blog.title, blog.author)}>
+                onClick={this.remove(blog.id, blog.title, blog.author)}>
                 delete
               </Button>
             }

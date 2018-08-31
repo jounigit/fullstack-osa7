@@ -1,11 +1,10 @@
 import React from 'react'
-import { connect } from 'react-redux'
 import {  Link } from 'react-router-dom'
 import { Card, Header } from 'semantic-ui-react'
 
 class User extends React.Component {
   render() {
-    const user = this.props.users.find(user => user.id === this.props.match.params.id)
+    const { user } = this.props
     return user === undefined ? '' :
       (
         <Card centered>
@@ -32,13 +31,4 @@ class User extends React.Component {
   }
 }
 
-const mapStateToProps = (state) => {
-  return {
-    users: state.users
-  }
-}
-
-export default connect(
-  mapStateToProps,
-  null
-)(User)
+export default User

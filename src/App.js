@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { logout } from './reducers/loginReducer'
+import { logout, loggedUser } from './reducers/loginReducer'
 import Blog from './components/Blog'
 import BlogList from './components/BlogList'
 import Notification from './components/Notification'
@@ -14,18 +14,21 @@ import { Container } from 'semantic-ui-react'
 import './App.css'
 
 export class App extends React.Component {
+  componentDidMount() {
+    const loggedUserJSON = window.localStorage.getItem('loggedBlogAppUser')
+    if (loggedUserJSON) {
+      const loggedInUser = JSON.parse(loggedUserJSON)
+      this.props.loggedUser(loggedInUser)
+    }
+  }
 
   render() {
-    const { user, logout } = this.props
-
-    if (this.props.user === null) {
+    const { user, users, blogs, logout } = this.props
+    if (user === null) {
       return (
         <LoginForm />
       )
     }
-
-    const blogById = (id) =>
-      this.props.blogs.find(blog => blog.id === id)
 
     return (
       <Container>
@@ -42,13 +45,13 @@ export class App extends React.Component {
             <Route exact path="/" render={() => <BlogList /> } />
             <Route exact path="/blogs/:id" render={({ match }) =>
               <Blog
-                blog = {blogById(match.params.id)}
+                blog = {blogs.find(b => b.id === match.params.id)}
                 username={user.username}
               />} />
             <Route exact path="/users" render={() => <UserList />} />
 
             <Route exact path="/users/:id" render={({ match }) =>
-              <User match={match} />} />
+              <User user = {users.find(u => u.id === match.params.id)} />} />
           </div>
         </Router>
       </Container>
@@ -59,15 +62,34 @@ export class App extends React.Component {
 const mapStateToProps = (state) => {
   return {
     user: state.user,
+    users: state.users,
     blogs: state.blogs
   }
 }
 
 const mapDispatchToProps = {
-  logout
+  logout, loggedUser
 }
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(App)
+
+/*
+<div>
+  <MenuCustom user={user} logout={logout} />
+
+  <BlogForm />
+  <Route exact path="/" render={() => <BlogList /> } />
+  <Route exact path="/blogs/:id" render={({ match }) =>
+    <Blog
+      blog = {blogById(match.params.id)}
+      username={user.username}
+    />} />
+  <Route exact path="/users" render={() => <UserList />} />
+
+  <Route exact path="/users/:id" render={({ match }) =>
+    <User match={match} />} />
+</div>
+*/

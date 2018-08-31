@@ -8,6 +8,7 @@ export const INIT_USERS = 'INIT_USERS'
 
 export const LOGIN = 'LOGIN'
 export const LOGOUT = 'LOGOUT'
+export const LOGGEDIN = 'LOGGEDIN'
 
 export const NEW_MSG = 'NEW_MSG'
 export const HIDE_MSG = 'HIDE_MSG'

@@ -62,6 +62,7 @@ exports[`>>>APP --- (Mount + wrapping in <Provider>) +++ renders LoginForm corre
 
 exports[`>>>APP --- (Shallow + passing the {store} directly) +++ renders correctly 1`] = `
 <App
+  loggedUser={[Function]}
   logout={[Function]}
   store={
     Object {
