@@ -10,6 +10,7 @@ import { login } from '../reducers/loginReducer'
 //import * as configureStore from 'redux-mock-store'
 import Blog from '../components/Blog'
 import LoginForm from '../components/LoginForm'
+import toJson from 'enzyme-to-json'
 
 let wrapper
 
@@ -23,6 +24,7 @@ describe('+++ Shallow Render REACT COMPONENTS', () => {
     const blogComponents = wrapper.find(Blog)
     expect(blogComponents.length).toBe(0)
   })
+
 })
 
 //*************************************************************
@@ -43,6 +45,11 @@ describe('>>>APP --- (Shallow + passing the {store} directly)', () => {
   it('+++ render the connected component', () => {
     expect(wrapper.length).toEqual(1)
   })
+
+  it('+++ renders correctly', () => {
+    expect(toJson(wrapper)).toMatchSnapshot()
+  })
+
 })
 
 //***************************************************************************
@@ -68,6 +75,13 @@ describe('>>>APP --- (Mount + wrapping in <Provider>)', () => {
     const loginFormComponent = wrapper.find(App).find(LoginForm)
     console.log('LOGINFORM ---- ', loginFormComponent)
     expect(loginFormComponent.length).toBe(1)
+  })
+
+  it('+++ renders LoginForm correctly', () => {
+    expect(toJson(wrapper, {
+      noKey: false,
+      mode: 'deep'
+    })).toMatchSnapshot()
   })
 
 })
