@@ -2,7 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import '../App.css'
 
-class Notification extends React.Component {
+export class Notification extends React.Component {
   render() {
     const { notification } = this.props
     const visibility = { display: notification.visibility ? '' : 'none' }

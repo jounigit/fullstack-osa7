@@ -1,13 +1,7 @@
 import React from 'react'
-import { shallow, mount } from 'enzyme'
-
-import Adapter from 'enzyme-adapter-react-16'
+import { shallow } from 'enzyme'
 import configureStore from 'redux-mock-store'
-import thunk from 'redux-thunk'
-const mockStore = configureStore([thunk])
-import { Provider } from 'react-redux'
-import ConnectedBlog, { Blog } from '../components/Blog'
-jest.mock('../services/blogs')
+import ConnectedBlog from '../components/Blog'
 
 const blog = {
   id: '5b1fb4575b22f939e7b46efa',
@@ -38,7 +32,7 @@ describe('>>>BLOGI --- (Shallow + passing the {store} directly)', () => {
   })
 
   it('+++ check Prop matches with initialState', () => {
-    console.log('MOCKSTORE 2 ---- ', initialState)
+    //console.log('MOCKSTORE 2 ---- ', initialState)
     expect(wrapper.prop('blog')).toEqual(initialState.blog)
   })
 })

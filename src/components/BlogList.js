@@ -9,7 +9,7 @@ const BlogList = (props) => (
     <Header as='h2' color='grey'>Blogs</Header>
     <Segment.Group>
       {props.blogs.map(blog =>
-        <Segment key={blog.id}  >
+        <Segment key={blog.id} >
           <Link to={`/blogs/${blog.id}`}>
             {blog.title} {blog.author}
           </Link>

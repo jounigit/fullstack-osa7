@@ -6,15 +6,13 @@ import thunk from 'redux-thunk'
 const mockStore = configureStore([thunk])
 import { Provider } from 'react-redux'
 import { login } from '../reducers/loginReducer'
-//const configureStore = require('redux-mock-store')
-//import * as configureStore from 'redux-mock-store'
 import Blog from '../components/Blog'
 import LoginForm from '../components/LoginForm'
 import toJson from 'enzyme-to-json'
 
 let wrapper
 
-describe('+++ Shallow Render REACT COMPONENTS', () => {
+describe.skip('+++ Shallow Render REACT COMPONENTS', () => {
   beforeEach(() => {
     wrapper = shallow(<App />)
   })
@@ -28,7 +26,7 @@ describe('+++ Shallow Render REACT COMPONENTS', () => {
 })
 
 //*************************************************************
-describe('>>>APP --- (Shallow + passing the {store} directly)', () => {
+describe.skip('>>>APP --- (Shallow + passing the {store} directly)', () => {
   const initialState = { user: null }
   const mockStore = configureStore()
   let store, wrapper
@@ -53,7 +51,7 @@ describe('>>>APP --- (Shallow + passing the {store} directly)', () => {
 })
 
 //***************************************************************************
-describe('>>>APP --- (Mount + wrapping in <Provider>)', () => {
+describe.skip('>>>APP --- (Mount + wrapping in <Provider>)', () => {
   const initialState = { user: null }
   const mockStore = configureStore()
   let store, wrapper
@@ -87,7 +85,7 @@ describe('>>>APP --- (Mount + wrapping in <Provider>)', () => {
 })
 
 //**************************************************************************
-describe('>>> APP ---- login action with wrong credentials', () => {
+describe.skip('>>> APP ---- login action with wrong credentials', () => {
   it('handles login', async () => {
     const store = mockStore()
     //console.log('MOCKSTORE 2 ---- ', store)
