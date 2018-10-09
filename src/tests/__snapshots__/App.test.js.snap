@@ -1,0 +1,100 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`>>>APP --- (Mount + wrapping in <Provider>) +++ renders LoginForm correctly 1`] = `
+<div
+  className="ui centered card"
+  onClick={[Function]}
+  style={
+    Object {
+      "marginTop": 20,
+    }
+  }
+>
+  <div
+    className="content"
+  >
+    <h2
+      className="ui green header"
+    >
+      Kirjaudu sovellukseen
+    </h2>
+  </div>
+  <div
+    className="content"
+  >
+    <form
+      className="ui form"
+      onSubmit={[Function]}
+    >
+      <div
+        className="field"
+      >
+        <label>
+          käyttäjätunnus
+        </label>
+        <input
+          name="username"
+          type="text"
+        />
+      </div>
+      <div
+        className="field"
+      >
+        <label>
+          salasana
+        </label>
+        <input
+          name="password"
+          type="password"
+        />
+      </div>
+      <button
+        className="ui green basic button"
+        onClick={[Function]}
+        role="button"
+      >
+        kirjaudu
+      </button>
+    </form>
+  </div>
+</div>
+`;
+
+exports[`>>>APP --- (Shallow + passing the {store} directly) +++ renders correctly 1`] = `
+<App
+  loggedUser={[Function]}
+  logout={[Function]}
+  store={
+    Object {
+      "clearActions": [Function],
+      "dispatch": [Function],
+      "getActions": [Function],
+      "getState": [Function],
+      "replaceReducer": [Function],
+      "subscribe": [Function],
+    }
+  }
+  storeSubscription={
+    Subscription {
+      "listeners": Object {
+        "clear": [Function],
+        "get": [Function],
+        "notify": [Function],
+        "subscribe": [Function],
+      },
+      "onStateChange": [Function],
+      "parentSub": undefined,
+      "store": Object {
+        "clearActions": [Function],
+        "dispatch": [Function],
+        "getActions": [Function],
+        "getState": [Function],
+        "replaceReducer": [Function],
+        "subscribe": [Function],
+      },
+      "unsubscribe": [Function],
+    }
+  }
+  user={null}
+/>
+`;

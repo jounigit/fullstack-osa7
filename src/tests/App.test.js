@@ -12,7 +12,7 @@ import toJson from 'enzyme-to-json'
 
 let wrapper
 
-describe.skip('+++ Shallow Render REACT COMPONENTS', () => {
+describe('+++ Shallow Render REACT COMPONENTS', () => {
   beforeEach(() => {
     wrapper = shallow(<App />)
   })
@@ -26,7 +26,7 @@ describe.skip('+++ Shallow Render REACT COMPONENTS', () => {
 })
 
 //*************************************************************
-describe.skip('>>>APP --- (Shallow + passing the {store} directly)', () => {
+describe('>>>APP --- (Shallow + passing the {store} directly)', () => {
   const initialState = { user: null }
   const mockStore = configureStore()
   let store, wrapper
@@ -51,7 +51,7 @@ describe.skip('>>>APP --- (Shallow + passing the {store} directly)', () => {
 })
 
 //***************************************************************************
-describe.skip('>>>APP --- (Mount + wrapping in <Provider>)', () => {
+describe('>>>APP --- (Mount + wrapping in <Provider>)', () => {
   const initialState = { user: null }
   const mockStore = configureStore()
   let store, wrapper
@@ -85,7 +85,7 @@ describe.skip('>>>APP --- (Mount + wrapping in <Provider>)', () => {
 })
 
 //**************************************************************************
-describe.skip('>>> APP ---- login action with wrong credentials', () => {
+describe('>>> APP ---- login action with wrong credentials', () => {
   it('handles login', async () => {
     const store = mockStore()
     //console.log('MOCKSTORE 2 ---- ', store)
