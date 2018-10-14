@@ -2,7 +2,6 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { notify } from '../reducers/notificationReducer'
 import Comments from './Comments'
-import { Redirect } from 'react-router'
 import { like, deleteBlog } from '../reducers/blogReducer'
 import { Button, Header, Card } from 'semantic-ui-react'
 
@@ -20,15 +19,19 @@ class Blog extends React.Component {
     }
     this.props.deleteBlog(id)
     this.props.notify(`blog '${title}' by ${author} removed`, 5, 'success')
-    return <Redirect to='/' />
   }
 
   render() {
     const { username, blog } = this.props
 
     if ( blog === undefined ) {
-      return <Redirect to='/' />
+      return (
+        <div>
+          <h3>No blog here!</h3>
+        </div>
+      )
     }
+
     const adder = blog.user ? blog.user.name : 'anonymous'
     const deletable = blog.user === undefined || blog.user.username === username
 

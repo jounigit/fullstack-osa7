@@ -1,0 +1,25 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`>>>BLOGI --- (Mount + passing the {store} directly) +++ Blog renders correctly 1`] = `
+<div>
+  <h3>
+    No blog here!
+  </h3>
+</div>
+`;
+
+exports[`>>>BLOGI --- (Mount + passing the {store} directly) +++ renders Blog correctly 1`] = `
+<div>
+  <h3>
+    No blog here!
+  </h3>
+</div>
+`;
+
+exports[`>>>BLOGI --- (Shallow + passing the {store} directly) +++ Blog renders correctly 1`] = `
+<div>
+  <h3>
+    No blog here!
+  </h3>
+</div>
+`;

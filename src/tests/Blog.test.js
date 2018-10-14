@@ -2,6 +2,7 @@ import React from 'react'
 import { shallow } from 'enzyme'
 import configureStore from 'redux-mock-store'
 import ConnectedBlog from '../components/Blog'
+import toJson from 'enzyme-to-json'
 
 const blog = {
   id: '5b1fb4575b22f939e7b46efa',
@@ -34,5 +35,9 @@ describe('>>>BLOGI --- (Shallow + passing the {store} directly)', () => {
   it('+++ check Prop matches with initialState', () => {
     //console.log('MOCKSTORE 2 ---- ', initialState)
     expect(wrapper.prop('blog')).toEqual(initialState.blog)
+  })
+
+  it('+++ renders correctly', () => {
+    expect(toJson(wrapper)).toMatchSnapshot()
   })
 })
