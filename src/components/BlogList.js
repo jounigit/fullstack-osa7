@@ -1,8 +1,8 @@
+// @flow
 import React from 'react'
 import { connect } from 'react-redux'
 import {  Link } from 'react-router-dom'
 import { Header, Segment } from 'semantic-ui-react'
-
 
 const BlogList = (props) => (
   <div>

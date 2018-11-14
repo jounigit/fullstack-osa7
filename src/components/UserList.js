@@ -56,37 +56,3 @@ export default connect(
   mapStateToProps,
   { initUsers }
 )(UserList)
-
-/*  {this.props.users.map(user =>
-    <tr key={user.id}>
-      <td>
-        <Link to={`/users/${user.id}`}><div>{user.name}</div></Link>
-      </td>
-      <td>
-        {user.blogs.length}
-      </td>
-    </tr>
-  )} */
-/*
-  <table>
-    <tbody>
-      <tr>
-        <td>
-        </td>
-        <td>
-          <strong>blogs added</strong>
-        </td>
-      </tr>
-      {this.props.users.map(user =>
-          <tr key={user.id}>
-            <td>
-              <Link to={`/users/${user.id}`}><div>{user.name}</div></Link>
-            </td>
-            <td>
-              {user.blogs.length}
-            </td>
-          </tr>
-        )}
-    </tbody>
-  </table>
-  */

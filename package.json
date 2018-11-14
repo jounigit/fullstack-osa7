@@ -19,17 +19,21 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "flow": "flow"
   },
   "proxy": "http://localhost:3003",
   "devDependencies": {
+    "babel-cli": "^6.26.0",
     "babel-eslint": "^8.2.6",
+    "babel-preset-flow": "^6.23.0",
     "enzyme": "^3.3.0",
     "enzyme-adapter-react-16": "^1.1.1",
     "enzyme-to-json": "^3.3.4",
     "eslint": "^5.2.0",
     "eslint-plugin-jest": "^21.21.0",
     "eslint-plugin-react": "^7.10.0",
+    "flow-bin": "^0.86.0",
     "react-test-renderer": "^16.4.2",
     "redux-mock-store": "^1.5.3"
   }
