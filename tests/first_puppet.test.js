@@ -32,13 +32,13 @@ describe('E2E, Blog app', () => {
     await page.waitForSelector('.card')
     //console.log(await page.content())
     //await expect(page).toMatch('Kirjaudu sovellukseen')
-
     const textContent = await page.$eval('body', el => el.textContent)
     expect(textContent.includes('Kirjaudu sovellukseen')).toBe(true)
   }, 1600000)
 
   test('not loggedin user', async () => {
     await page.goto('http://localhost:3000/blogs/1')
+    await page.waitForSelector('.card')
     await expect(page).toMatch('Kirjaudu sovellukseen')
   })
 
