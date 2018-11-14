@@ -12,7 +12,7 @@
   "author": "Jouni Airaksinen",
   "license": "ISC",
   "dependencies": {
-    "bcrypt": "^2.0.1",
+    "bcrypt": "^3.0.2",
     "cors": "^2.8.4",
     "dotenv": "^6.0.0",
     "express": "^4.16.3",
@@ -23,12 +23,16 @@
     "babel-eslint": "^8.2.3",
     "cross-env": "^5.1.6",
     "eslint": "^4.19.1",
+    "faker": "^4.1.0",
     "jest": "^23.5.0",
+    "jest-cli": "^23.6.0",
+    "jest-puppeteer": "^3.4.0",
     "nodemon": "^1.17.5",
     "puppeteer": "^1.9.0",
     "supertest": "^3.1.0"
   },
   "jest": {
+    "preset": "jest-puppeteer",
     "testEnvironment": "node"
   }
 }

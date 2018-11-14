@@ -19,6 +19,7 @@ mongoose
     console.log(err)
   })
 
+app.use(express.static('build'))
 app.use(cors())
 app.use(bodyParser.json())
 app.use(middleware.tokenExtractor)
