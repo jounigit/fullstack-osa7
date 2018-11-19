@@ -2,7 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { login } from '../reducers/loginReducer'
 import { Form, Button, Header, Card } from 'semantic-ui-react'
-import PropTypes from 'prop-types'
+//import PropTypes from 'prop-types'
 
 export class LoginForm extends React.Component {
   handleSubmit = async (e) => {
@@ -35,11 +35,11 @@ export class LoginForm extends React.Component {
     )
   }
 }
-
+/*
 LoginForm.propTypes = {
   username: PropTypes.string,
   password: PropTypes.string
-}
+} */
 
 export default connect(
   null,

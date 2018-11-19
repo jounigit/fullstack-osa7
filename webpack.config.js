@@ -1,6 +1,7 @@
 const path = require('path')
 
 const config = {
+  target: 'web',
   entry: './src/index.js',
   output: {
     path: path.resolve(__dirname, 'dist'),
@@ -23,7 +24,14 @@ const config = {
             '@babel/preset-env',
             '@babel/preset-react'
           ],
-          plugins: ['@babel/plugin-proposal-class-properties']
+          plugins: [
+            '@babel/plugin-transform-runtime',
+            '@babel/plugin-proposal-class-properties',
+            '@babel/plugin-transform-regenerator',
+            '@babel/plugin-transform-async-to-generator',
+            '@babel/plugin-proposal-async-generator-functions',
+            'babel-plugin-transform-class-properties'
+          ]
         }
       },
       {

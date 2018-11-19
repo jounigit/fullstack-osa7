@@ -2,7 +2,7 @@ import React from 'react'
 import { shallow, mount } from 'enzyme'
 import configureStore from 'redux-mock-store'
 import { Provider } from 'react-redux'
-import ConnectedBlog, { Blog } from '../components/Blog'
+import ConnectedBlog from '../components/Blog'
 import renderer from 'react-test-renderer'
 import toJson from 'enzyme-to-json'
 
