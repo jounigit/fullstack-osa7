@@ -11,6 +11,7 @@ if (process.env.NODE_ENV === 'test') {
 }
 
 module.exports = {
+  secret: process.env.SECRET,
   mongoUrl,
   port
 }
